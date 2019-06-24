@@ -32,10 +32,10 @@ public final class JobKafka {
         try {
             Stream<String> stream = Files.lines(Paths.get("./variables/weather-variables.txt"));
 
-            WeatherIntegrator.newWeatherIntegrator(KafkaParser.newKafkaParser("./client.properties", "vfi-batch-sample", 0),
+            WeatherIntegrator.newWeatherIntegrator(KafkaParser.newKafkaParser("./client.properties", "vfi-batch-1", 3000),
                     "/home/wp3user01/grib-files/", 7,
                     8, 3, "yyyy-MM-dd HH:mm:ss", stream.collect(Collectors.toList()))
-                    .lruCacheMaxEntries(1).useIndex().filter(Rectangle.newRectangle(-10.5, 34,37.7, 60)).build().integrateAndOutputToKafkaTopic(KafkaOutput.newKafkaOutput("./producer.properties","nikos-trial"));
+                    .lruCacheMaxEntries(1).useIndex().filter(Rectangle.newRectangle(-10.5, 34,37.7, 60)).build().integrateAndOutputToKafkaTopic(KafkaOutput.newKafkaOutput("./producer.properties","vfi-batch-1-wi"));
 
             Runtime rt = Runtime.getRuntime();
             System.out.println("Approximation of used Memory: " + (rt.totalMemory() - rt.freeMemory()) / 1000000 + " MB");
