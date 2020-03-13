@@ -1,13 +1,13 @@
 package gr.ds.unipi.wi;
 
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
 import gr.ds.unipi.stpin.Rectangle;
 import gr.ds.unipi.stpin.datasources.Datasource;
 import gr.ds.unipi.stpin.datasources.KafkaDatasource;
 import gr.ds.unipi.stpin.outputs.KafkaOutput;
 import gr.ds.unipi.stpin.parsers.CsvRecordParser;
 import gr.ds.unipi.stpin.parsers.RecordParser;
-import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -23,9 +23,6 @@ public final class JobKafka {
         Config wi = conf.getConfig("wi");
         Config filter = conf.getConfig("filter");
 
-        WeatherIntegratorJob.BUFFERSIZE = wi.getInt("bufferSize");
-        WeatherIntegratorJob.INFOEVERYN = wi.getInt("infoEveryN");
-
         try {
             Stream<String> stream = Files.lines(Paths.get(wi.getString("variablesPath")));
 
@@ -38,16 +35,15 @@ public final class JobKafka {
             WeatherIntegrator.Builder w = WeatherIntegrator.newWeatherIntegrator(rp,
                     wi.getString("gribFilesFolderPath"), stream.collect(Collectors.toList()));
 
-            if(wi.getBoolean("filter")){
+            if (wi.getBoolean("filter")) {
                 w.filter(Rectangle.newRectangle(filter.getDouble("minLon"), filter.getDouble("minLat"), filter.getDouble("maxLon"), filter.getDouble("maxLat")));
             }
 
-            if(wi.getBoolean("removeLastValueFromRecords")){
+            if (wi.getBoolean("removeLastValueFromRecords")) {
                 w.removeLastValueFromRecords();
             }
 
             w.lruCacheMaxEntries(wi.getInt("lruCacheMaxEntries")).gribFilesExtension(wi.getString("gribFilesExtension")).useIndex().build().integrate(kafkaOutput);
-
 
 
         } catch (Exception e) {

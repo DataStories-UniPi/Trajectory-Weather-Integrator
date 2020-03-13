@@ -1,13 +1,13 @@
 package gr.ds.unipi.wi;
 
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
 import gr.ds.unipi.stpin.Rectangle;
 import gr.ds.unipi.stpin.datasources.Datasource;
 import gr.ds.unipi.stpin.datasources.KafkaDatasource;
 import gr.ds.unipi.stpin.outputs.KafkaOutput;
 import gr.ds.unipi.stpin.parsers.RecordParser;
 import gr.ds.unipi.stpin.parsers.VfiObjectParser;
-import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -35,16 +35,15 @@ public final class JobVFIKafka {
             WeatherIntegrator.Builder w = WeatherIntegrator.newWeatherIntegrator(rp,
                     wi.getString("gribFilesFolderPath"), stream.collect(Collectors.toList()));
 
-            if(wi.getBoolean("filter")){
+            if (wi.getBoolean("filter")) {
                 w.filter(Rectangle.newRectangle(filter.getDouble("minLon"), filter.getDouble("minLat"), filter.getDouble("maxLon"), filter.getDouble("maxLat")));
             }
 
-            if(wi.getBoolean("removeLastValueFromRecords")){
+            if (wi.getBoolean("removeLastValueFromRecords")) {
                 w.removeLastValueFromRecords();
             }
 
             w.lruCacheMaxEntries(wi.getInt("lruCacheMaxEntries")).useIndex().build().integrate(kafkaOutput);
-
 
 
         } catch (Exception e) {

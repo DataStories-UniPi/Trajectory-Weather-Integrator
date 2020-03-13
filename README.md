@@ -94,9 +94,9 @@ $ git clone https://github.com/nkoutroumanis/Weather-Integrator
 Execute some lifecycle stages in Maven for the Weather Integrator repository. 
 
 ```
-$ cd  WeatherIntegrator/spatiotemporal-processing-interface/
+$ cd  WeatherIntegrator/weather-integrator
 $ mvn install
-$ cd ../weather-integrator
+$ cd ../weather-integrator-app
 $ mvn install
 $ cd ../
 ```
@@ -203,7 +203,7 @@ This object can trigger the data integration procedure.
 // The second argument is the path where the GRIB files are stored. It can also be an HDFS path, starting hdfs://.../.../
 // The third argument is a list with the weather attributes which will be integrated to the records
 
-WeatherIntegrator weatherIntegrator = WeatherIntegrator.newWeatherIntegrator(recordParser, "/path/to/grib/files/folder", List.of("weatherattr1", "weatherattr1"))
+WeatherIntegrator weatherIntegrator = WeatherIntegrator.newWeatherIntegrator(recordParser, "/path/to/grib/files/folder", List.of("weatherattr1", "weatherattr2"))
         .useIndex().build();
 
 weatherIntegrator.integrate(output);

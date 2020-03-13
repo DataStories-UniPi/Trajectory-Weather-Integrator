@@ -16,10 +16,10 @@ public final class GribFileWithoutIndex implements GribFile {
 
     private GribFileWithoutIndex(String path, List<String> listOfVariables, Function<String, NetcdfFile> netcdfFileFunction) throws IOException {
         NetcdfFile ncf = netcdfFileFunction.apply(path);
-        this.listOfVariables = listOfVariables.stream().map(s -> ncf.findVariable(s)).collect(Collectors.toList());
+        this.listOfVariables = listOfVariables.stream().map(ncf::findVariable).collect(Collectors.toList());
     }
 
-    public static GribFileWithoutIndex newGribFileWithoutIndex(String path, List<String> listOfVariables, Function<String,NetcdfFile> netcdfFileFunction) throws IOException {
+    public static GribFileWithoutIndex newGribFileWithoutIndex(String path, List<String> listOfVariables, Function<String, NetcdfFile> netcdfFileFunction) throws IOException {
         return new GribFileWithoutIndex(path, listOfVariables, netcdfFileFunction);
     }
 
