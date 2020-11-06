@@ -108,7 +108,22 @@ public final class WeatherIntegrator {
 
         start = System.currentTimeMillis();
 
-        Function<Record, Date> dateFunction = RecordParser.dateFunction(recordParser);
+        Function<Record, Date> dateFunction = recordParser.getDateFunction();
+
+//        Function<Record, Date> dateFunction;
+//        if(recordParser.getDateFormat().equals("unixTimestampSec")){
+//            dateFunction = RecordParser.dateFunctionUnixTimestampSec(recordParser);
+//        }
+//        else if(recordParser.getDateFormat().equals("unixTimestampMillis")){
+//            dateFunction = RecordParser.dateFunctionUnixTimestampMillis(recordParser);
+//        }
+//        else if(recordParser.getDateFormat().equals("unixTimestampDecimals")){
+//            dateFunction = RecordParser.dateFunctionUnixTimestampDecimals(recordParser);
+//        }
+//        else{
+//            recordParser.setSimpleDateFormat();
+//            dateFunction = RecordParser.dateFunctionDateFormatPattern(recordParser);
+//        }
 
         long window = 0;
         long startTimeWindow = System.currentTimeMillis();
@@ -141,7 +156,6 @@ public final class WeatherIntegrator {
                     if (record.getFieldNames() != null) {
                         record.deleteLastFieldName();
                     }
-                    //else sb.append(lineWithMeta);
                 }
 
                 List<Object> values = wdo.obtainAttributes(longitude, latitude, d);

@@ -6,6 +6,7 @@ import gr.ds.unipi.stpin.datasources.FileDatasource;
 import gr.ds.unipi.stpin.outputs.FileOutput;
 import gr.ds.unipi.stpin.parsers.CsvRecordParser;
 import gr.ds.unipi.stpin.parsers.RecordParser;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.nio.file.Files;
